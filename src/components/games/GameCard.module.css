@@ -2,6 +2,8 @@
   position: relative;
   flex-shrink: 0;
   width: 200px;
+  min-width: 0;
+  max-width: 100%;
   border-radius: var(--radius-xl);
   overflow: hidden;
   background: var(--color-surface);
@@ -26,7 +28,6 @@
   outline-offset: 3px;
 }
 
-/* ── Artwork ── */
 .artwork {
   position: relative;
   width: 100%;
@@ -42,9 +43,7 @@
   pointer-events: none;
 }
 
-.card:hover .artworkImg {
-  transform: scale(1.07);
-}
+.card:hover .artworkImg { transform: scale(1.07); }
 
 .artworkOverlay {
   position: absolute;
@@ -56,7 +55,6 @@
   );
 }
 
-/* ── Category badge ── */
 .badge {
   position: absolute;
   top: var(--space-3);
@@ -73,13 +71,20 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   pointer-events: none;
+  max-width: calc(100% - var(--space-6));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* ── Coming Soon chip ── */
 .comingSoon {
   position: absolute;
   top: var(--space-3);
   left: var(--space-3);
+  max-width: calc(100% - var(--space-6));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   background: rgba(14, 15, 28, 0.78);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -93,9 +98,9 @@
   letter-spacing: 0.06em;
 }
 
-/* ── Card footer ── */
 .footer {
-  padding: var(--space-4) var(--space-4) var(--space-4);
+  padding: var(--space-4);
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -103,6 +108,7 @@
 }
 
 .info {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -131,56 +137,52 @@
 }
 
 .actions {
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
 }
 
-/* ── Responsive widths ── */
-/* 320px–374px */
 @media (max-width: 374px) {
   .card { width: 152px; }
   .name { font-size: 12px; }
 }
 
-/* 375px–479px */
 @media (min-width: 375px) and (max-width: 479px) {
   .card { width: 168px; }
 }
 
-/* 480px–767px */
 @media (min-width: 480px) and (max-width: 767px) {
   .card { width: 190px; }
 }
 
-/* 768px–1023px (tablet) */
 @media (min-width: 768px) and (max-width: 1023px) {
   .card { width: 210px; }
 }
 
-/* 1024px–1365px */
 @media (min-width: 1024px) and (max-width: 1365px) {
   .card { width: 220px; }
 }
 
-/* 1366px–1439px */
 @media (min-width: 1366px) and (max-width: 1439px) {
   .card { width: 230px; }
 }
 
-/* 1440px–1599px */
 @media (min-width: 1440px) and (max-width: 1599px) {
   .card { width: 240px; }
 }
 
-/* 1600px–1919px */
 @media (min-width: 1600px) and (max-width: 1919px) {
   .card { width: 255px; }
 }
 
-/* 1920px+ */
 @media (min-width: 1920px) {
-  .card  { width: 272px; }
-  .name  { font-size: var(--font-size-base); }
+  .card { width: 272px; }
+  .name { font-size: var(--font-size-base); }
+}
+
+@media (max-width: 480px) {
+  .card { max-width: calc(100vw - 32px); }
+  .actions { align-items: stretch; }
 }
