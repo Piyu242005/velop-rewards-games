@@ -3,15 +3,16 @@ import { Link }       from 'react-router-dom';
 import GameHeader      from '../components/games/GameHeader';
 import GamesCarousel   from '../components/games/GamesCarousel';
 import styles          from './Games.module.css';
-import veloopLogo      from '../../assets/branding/velop-logo.png';
 import coinIcon        from '../../assets/icons/game-coin-icon.png';
 import tokenIcon       from '../../assets/icons/token-icon.png';
 import spinsIcon       from '../../assets/icons/redeem-spins-icon.png';
 import gamesData       from '../data/gamesData';
+import usePageTitle    from '../hooks/usePageTitle';
 
 const playableGames = gamesData.filter((g) => g.playable);
 
 export default function Games() {
+  usePageTitle('Games Hub');
   return (
     <div className={styles.page}>
       <GameHeader title="Games" />

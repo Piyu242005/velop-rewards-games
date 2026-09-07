@@ -1,13 +1,12 @@
 // GameHome — individual game landing page.
-// Shows artwork, name, token cost, and the Pay to Play gate.
-// Token deduction happens here before routing to /guide.
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
-import GameHeader from '../components/games/GameHeader';
-import TokenCost  from '../components/games/TokenCost';
-import styles     from './GameHome.module.css';
+import GameHeader    from '../components/games/GameHeader';
+import TokenCost     from '../components/games/TokenCost';
+import styles        from './GameHome.module.css';
 import { getGameBySlug } from '../data/gamesData';
 import useTokens         from '../hooks/useTokens';
+import usePageTitle      from '../hooks/usePageTitle';
 import tokenIcon         from '../../assets/icons/token-icon.png';
 
 export default function GameHome() {
@@ -17,6 +16,7 @@ export default function GameHome() {
   const [error, setError] = useState('');
 
   const game = getGameBySlug(slug);
+  usePageTitle(game?.name ?? 'Game');
 
   if (!game) {
     return (

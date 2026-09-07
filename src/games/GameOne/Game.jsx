@@ -1,10 +1,25 @@
 // Space Shooter — Game One
-// Full canvas-based game with complete game loop:
-// IDLE → PLAYING → OVER → REVIVE → REWARD
+// Full canvas-based game: IDLE → PLAYING → OVER → REVIVE → REWARD
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { useNavigate, Link }   from 'react-router-dom';
 import useGameCoins            from '../../hooks/useGameCoins';
+import usePageTitle            from '../../hooks/usePageTitle';
 import styles                  from './Game.module.css';
+
+// ── Safari <15.4 roundRect polyfill ────────────────────────
+if (typeof CanvasRenderingContext2D !== 'undefined' &&
+    !CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+    const radius = Math.min(r, w / 2, h / 2);
+    this.beginPath();
+    this.moveTo(x + radius, y);
+    this.arcTo(x + w, y,     x + w, y + h, radius);
+    this.arcTo(x + w, y + h, x,     y + h, radius);
+    this.arcTo(x,     y + h, x,     y,     radius);
+    this.arcTo(x,     y,     x + w, y,     radius);
+    this.closePath();
+  };
+}
 
 // ── Game constants ──────────────────────────────────────────
 const W               = 480;
@@ -124,6 +139,7 @@ function drawBullet(ctx, x, y) {
 const PHASE = { IDLE: 'IDLE', PLAYING: 'PLAYING', OVER: 'OVER', REVIVE: 'REVIVE', REWARD: 'REWARD' };
 
 export default function SpaceShooter() {
+  usePageTitle('Space Shooter');
   const navigate    = useNavigate();
   const { earnCoins } = useGameCoins();
 

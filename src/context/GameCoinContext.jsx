@@ -1,16 +1,13 @@
-import { createContext, useContext, useReducer, useCallback } from 'react';
+import { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
 
 // ============================================================
-// GameCoinContext — Centralised Game Coin economy
-// ============================================================
-// A single Game Coin balance is shared across all games.
-// This prevents per-game balance fragmentation and ensures
-// coins earned in Game One are spendable in redemption.
+// GameCoinContext — shared Game Coin economy (persisted).
+// Balance survives page refresh via localStorage.
 // ============================================================
 
 const GameCoinContext = createContext(null);
+const LS_KEY = 'vg_coin_balance';
 
-// ── Action types ────────────────────────────────────────────
 export const COIN_ACTIONS = {
   EARN:  'EARN',
   SPEND: 'SPEND',
@@ -18,13 +15,12 @@ export const COIN_ACTIONS = {
   SET:   'SET',
 };
 
-// ── Reducer ─────────────────────────────────────────────────
 function coinReducer(state, action) {
   switch (action.type) {
     case COIN_ACTIONS.EARN:
       return { ...state, balance: state.balance + action.amount };
     case COIN_ACTIONS.SPEND:
-      if (state.balance < action.amount) return state; // guard
+      if (state.balance < action.amount) return state;
       return { ...state, balance: state.balance - action.amount };
     case COIN_ACTIONS.RESET:
       return { ...state, balance: 0 };
@@ -35,47 +31,40 @@ function coinReducer(state, action) {
   }
 }
 
-// ── Provider ────────────────────────────────────────────────
+function loadBalance() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw !== null ? Math.max(0, Number(raw)) : 0;
+  } catch {
+    return 0;
+  }
+}
+
 export function GameCoinProvider({ children }) {
-  const [state, dispatch] = useReducer(coinReducer, { balance: 0 });
+  const [state, dispatch] = useReducer(coinReducer, undefined, () => ({
+    balance: loadBalance(),
+  }));
 
-  const earnCoins = useCallback((amount) => {
-    dispatch({ type: COIN_ACTIONS.EARN, amount });
-  }, []);
+  // Persist on every change
+  useEffect(() => {
+    try { localStorage.setItem(LS_KEY, String(state.balance)); } catch {}
+  }, [state.balance]);
 
-  const spendCoins = useCallback((amount) => {
-    dispatch({ type: COIN_ACTIONS.SPEND, amount });
-  }, []);
-
-  const resetCoins = useCallback(() => {
-    dispatch({ type: COIN_ACTIONS.RESET });
-  }, []);
-
-  const setCoins = useCallback((amount) => {
-    dispatch({ type: COIN_ACTIONS.SET, amount });
-  }, []);
-
-  const value = {
-    balance: state.balance,
-    earnCoins,
-    spendCoins,
-    resetCoins,
-    setCoins,
-  };
+  const earnCoins  = useCallback((amount) => dispatch({ type: COIN_ACTIONS.EARN,  amount }), []);
+  const spendCoins = useCallback((amount) => dispatch({ type: COIN_ACTIONS.SPEND, amount }), []);
+  const resetCoins = useCallback(()       => dispatch({ type: COIN_ACTIONS.RESET }), []);
+  const setCoins   = useCallback((amount) => dispatch({ type: COIN_ACTIONS.SET,   amount }), []);
 
   return (
-    <GameCoinContext.Provider value={value}>
+    <GameCoinContext.Provider value={{ balance: state.balance, earnCoins, spendCoins, resetCoins, setCoins }}>
       {children}
     </GameCoinContext.Provider>
   );
 }
 
-// ── Consumer hook ───────────────────────────────────────────
 export function useGameCoinContext() {
   const ctx = useContext(GameCoinContext);
-  if (!ctx) {
-    throw new Error('useGameCoinContext must be used inside <GameCoinProvider>');
-  }
+  if (!ctx) throw new Error('useGameCoinContext must be used inside <GameCoinProvider>');
   return ctx;
 }
 

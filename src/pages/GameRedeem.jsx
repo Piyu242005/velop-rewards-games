@@ -1,11 +1,12 @@
 // GameRedeem page — full premium redemption hub.
-import { Link }              from 'react-router-dom';
-import GameHeader             from '../components/games/GameHeader';
-import GameRedeemComponent    from '../components/games/GameRedeem';
-import styles                 from './GameRedeem.module.css';
-import coinIcon               from '../../assets/icons/game-coin-icon.png';
+import { Link }            from 'react-router-dom';
+import GameHeader           from '../components/games/GameHeader';
+import GameRedeemComponent  from '../components/games/GameRedeem';
+import styles               from './GameRedeem.module.css';
+import usePageTitle         from '../hooks/usePageTitle';
 
 export default function GameRedeemPage() {
+  usePageTitle('Redeem Coins');
   return (
     <div className={styles.page}>
       <GameHeader title="Redeem" />

@@ -1,13 +1,12 @@
-// GameRewardPage — shown after game ends (No Thanks path).
-// Displays coins earned, awards them to the shared balance, and
-// offers Play Again or Redeem.
+// GameRewardPage — shown after game ends.
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
-import GameHeader    from '../components/games/GameHeader';
-import styles        from './GameRewardPage.module.css';
-import { getGameBySlug } from '../data/gamesData';
-import useGameCoins  from '../hooks/useGameCoins';
-import coinIcon      from '../../assets/icons/game-coin-icon.png';
+import { useEffect, useRef }   from 'react';
+import GameHeader               from '../components/games/GameHeader';
+import styles                   from './GameRewardPage.module.css';
+import { getGameBySlug }        from '../data/gamesData';
+import useGameCoins             from '../hooks/useGameCoins';
+import usePageTitle             from '../hooks/usePageTitle';
+import coinIcon                 from '../../assets/icons/game-coin-icon.png';
 
 export default function GameRewardPage() {
   const { slug }           = useParams();
@@ -16,6 +15,7 @@ export default function GameRewardPage() {
   const awardedRef         = useRef(false);
 
   const game    = getGameBySlug(slug);
+  usePageTitle('Reward');
   // coins and score are passed via location state from the game
   const params  = new URLSearchParams(window.location.search);
   const coins   = Number(params.get('coins') ?? 0);

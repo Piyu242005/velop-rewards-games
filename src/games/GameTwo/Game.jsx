@@ -1,11 +1,10 @@
 // Fruit Blast — Game Two
-// Grid-based fruit-matching/popping game with complete game loop:
-// IDLE → PLAYING → OVER → REVIVE → REWARD
-// Rules: click a group of 2+ same fruits to blast them.
-// Score: group_size² × 10 points. 1 coin per 500 points.
+// Grid match/pop game: IDLE → PLAYING → OVER → REVIVE → REWARD
+// Score: group² × 10 pts. 1 coin per 500 pts.
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useGameCoins           from '../../hooks/useGameCoins';
+import usePageTitle           from '../../hooks/usePageTitle';
 import styles                 from './Game.module.css';
 
 // ── Config ──────────────────────────────────────────────────
@@ -68,6 +67,7 @@ function countCells(grid) {
 
 // ── Main component ───────────────────────────────────────────
 export default function FruitBlast() {
+  usePageTitle('Fruit Blast');
   const navigate      = useNavigate();
   const { earnCoins } = useGameCoins();
 

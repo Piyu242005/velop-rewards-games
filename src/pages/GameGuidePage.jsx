@@ -1,14 +1,15 @@
 // GameGuidePage — full guide screen after token deduction.
-// Shows game-specific rules then routes to /play.
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import GameHeader from '../components/games/GameHeader';
-import styles     from './GameGuidePage.module.css';
+import GameHeader    from '../components/games/GameHeader';
+import styles        from './GameGuidePage.module.css';
 import { getGameBySlug } from '../data/gamesData';
+import usePageTitle      from '../hooks/usePageTitle';
 
 export default function GameGuidePage() {
   const { slug }  = useParams();
   const navigate  = useNavigate();
   const game      = getGameBySlug(slug);
+  usePageTitle(game ? `${game.name} — Guide` : 'Guide');
 
   if (!game) {
     return (
