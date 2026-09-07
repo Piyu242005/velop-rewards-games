@@ -1,5 +1,5 @@
 // GameCard — single game card rendered inside the carousel.
-// Artwork is kept strictly behind the overlay; all interactive
+// Artwork layer is kept strictly behind the overlay; all interactive
 // UI (button, token cost) lives in the card footer.
 import { useNavigate } from 'react-router-dom';
 import PlayNowButton from './PlayNowButton';
@@ -10,11 +10,7 @@ export default function GameCard({ game }) {
   const navigate = useNavigate();
 
   function handlePlay() {
-    if (game.playable) {
-      navigate(game.route);
-    } else {
-      navigate(`/games/${game.id}/home`);
-    }
+    navigate(`/games/${game.slug}/home`);
   }
 
   return (
@@ -37,6 +33,13 @@ export default function GameCard({ game }) {
       {/* ── Category badge ──────────────────────── */}
       <div className={styles.badge}>{game.category}</div>
 
+      {/* ── Coming Soon overlay ─────────────────── */}
+      {!game.playable && (
+        <div className={styles.comingSoon} aria-label="Coming soon">
+          Coming Soon
+        </div>
+      )}
+
       {/* ── Card footer (interactive UI) ────────── */}
       <footer className={styles.footer}>
         <div className={styles.info}>
@@ -47,11 +50,6 @@ export default function GameCard({ game }) {
           <TokenCost amount={game.entryCost} />
           <PlayNowButton onClick={handlePlay} />
         </div>
-        {!game.playable && (
-          <div className={styles.comingSoon} aria-label="Coming soon">
-            Coming Soon
-          </div>
-        )}
       </footer>
     </article>
   );

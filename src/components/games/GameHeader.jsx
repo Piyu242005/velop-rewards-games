@@ -1,11 +1,15 @@
 // GameHeader — top bar shown on every game-related page.
-// Displays logo, page title, and the shared Game Coin balance.
+// Displays logo, page title, Game Coin balance, and Token balance.
 import { Link } from 'react-router-dom';
 import GameCoinBalance from './GameCoinBalance';
-import styles from './GameHeader.module.css';
+import styles     from './GameHeader.module.css';
 import veloopLogo from '../../../assets/branding/velop-logo.png';
+import tokenIcon  from '../../../assets/icons/token-icon.png';
+import useTokens  from '../../hooks/useTokens';
 
 export default function GameHeader({ title = 'Games' }) {
+  const { tokenBalance } = useTokens();
+
   return (
     <header className={styles.header} role="banner">
       <div className={styles.inner}>
@@ -23,8 +27,13 @@ export default function GameHeader({ title = 'Games' }) {
         {/* ── Page title ── */}
         <h1 className={styles.title}>{title}</h1>
 
-        {/* ── Game Coin balance ── */}
+        {/* ── Balances ── */}
         <div className={styles.right}>
+          {/* Token balance */}
+          <div className={styles.tokenBadge} aria-label={`Token balance: ${tokenBalance}`} title="Tokens">
+            <img src={tokenIcon} alt="" aria-hidden="true" className={styles.tokenIcon} width={16} height={16} />
+            <span className={styles.tokenValue}>{tokenBalance}</span>
+          </div>
           <GameCoinBalance />
         </div>
       </div>

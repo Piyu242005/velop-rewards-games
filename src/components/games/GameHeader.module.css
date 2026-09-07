@@ -45,6 +45,31 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  gap: var(--space-3);
+}
+
+.tokenBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(155, 125, 255, 0.1);
+  border: 1px solid rgba(155, 125, 255, 0.22);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-3);
+  white-space: nowrap;
+}
+
+.tokenIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.tokenValue {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-token);
+  font-variant-numeric: tabular-nums;
 }
 
 @media (max-width: 480px) {
