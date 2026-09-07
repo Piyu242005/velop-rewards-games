@@ -41,18 +41,29 @@ export default function GameHome() {
     navigate(`/games/${game.slug}/guide`);
   }
 
+  function handleArtworkError(event) {
+    const image = event.currentTarget;
+    if (!image.src.toLowerCase().endsWith('.avif')) return;
+    image.onerror = null;
+    image.src = game.image.replace(/\.avif$/i, '.png');
+  }
+
   return (
     <div className={styles.page}>
       <GameHeader title={game.name} />
 
       <main className={styles.main} id="main-content">
-        {/* ── Hero artwork ── */}
         <div className={styles.hero}>
-          <img src={game.image} alt={`${game.name} artwork`} className={styles.artwork} />
+          <img
+            src={game.image}
+            alt={`${game.name} artwork`}
+            className={styles.artwork}
+            decoding="async"
+            onError={handleArtworkError}
+          />
           <div className={styles.overlay} />
         </div>
 
-        {/* ── Content ── */}
         <div className={styles.content}>
           <div className={styles.info}>
             <span className={styles.category}>{game.category}</span>
@@ -62,14 +73,12 @@ export default function GameHome() {
 
           {game.playable ? (
             <div className={styles.payGate}>
-              {/* Token balance display */}
               <div className={styles.balanceRow}>
                 <img src={tokenIcon} alt="" width={18} height={18} aria-hidden="true" />
                 <span className={styles.balanceLabel}>Your Tokens:</span>
                 <span className={styles.balanceValue}>{tokenBalance}</span>
               </div>
 
-              {/* Entry cost */}
               <div className={styles.costRow}>
                 <span className={styles.costLabel}>Entry cost</span>
                 <TokenCost amount={game.entryCost} />
