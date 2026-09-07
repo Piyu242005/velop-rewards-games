@@ -12,6 +12,13 @@ export default function GameCard({ game }) {
     navigate(`/games/${game.slug}/home`);
   }
 
+  function handleArtworkError(event) {
+    const image = event.currentTarget;
+    if (!image.src.toLowerCase().endsWith('.avif')) return;
+    image.onerror = null;
+    image.src = game.image.replace(/\.avif$/i, '.png');
+  }
+
   return (
     <article className={styles.card} aria-label={`${game.name} — ${game.tagline}`}>
       <div className={styles.artwork}>
@@ -21,6 +28,7 @@ export default function GameCard({ game }) {
           className={styles.artworkImg}
           loading="lazy"
           decoding="async"
+          onError={handleArtworkError}
           draggable={false}
         />
         <div className={styles.artworkOverlay} aria-hidden="true" />
