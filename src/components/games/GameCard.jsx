@@ -1,6 +1,4 @@
-// GameCard — single game card rendered inside the carousel.
-// Artwork layer is kept strictly behind the overlay; all interactive
-// UI (button, token cost) lives in the card footer.
+// GameCard — reusable game card rendered from structured game data.
 import { useNavigate } from 'react-router-dom';
 import PlayNowButton from './PlayNowButton';
 import TokenCost from './TokenCost';
@@ -8,39 +6,29 @@ import styles from './GameCard.module.css';
 
 export default function GameCard({ game }) {
   const navigate = useNavigate();
+  const actionLabel = game.playable ? 'Play Now' : 'Coming Soon';
 
   function handlePlay() {
     navigate(`/games/${game.slug}/home`);
   }
 
   return (
-    <article
-      className={styles.card}
-      aria-label={`${game.name} — ${game.tagline}`}
-    >
-      {/* ── Artwork layer ───────────────────────── */}
-      <div className={styles.artwork} aria-hidden="true">
+    <article className={styles.card} aria-label={`${game.name} — ${game.tagline}`}>
+      <div className={styles.artwork}>
         <img
           src={game.image}
           alt={`${game.name} game artwork`}
           className={styles.artworkImg}
           loading="lazy"
+          decoding="async"
           draggable={false}
         />
-        <div className={styles.artworkOverlay} />
+        <div className={styles.artworkOverlay} aria-hidden="true" />
       </div>
 
-      {/* ── Category badge ──────────────────────── */}
       <div className={styles.badge}>{game.category}</div>
+      {!game.playable && <div className={styles.comingSoon}>Coming Soon</div>}
 
-      {/* ── Coming Soon overlay ─────────────────── */}
-      {!game.playable && (
-        <div className={styles.comingSoon} aria-label="Coming soon">
-          Coming Soon
-        </div>
-      )}
-
-      {/* ── Card footer (interactive UI) ────────── */}
       <footer className={styles.footer}>
         <div className={styles.info}>
           <h3 className={styles.name}>{game.name}</h3>
@@ -48,7 +36,11 @@ export default function GameCard({ game }) {
         </div>
         <div className={styles.actions}>
           <TokenCost amount={game.entryCost} />
-          <PlayNowButton onClick={handlePlay} />
+          <PlayNowButton
+            onClick={game.playable ? handlePlay : undefined}
+            disabled={!game.playable}
+            label={actionLabel}
+          />
         </div>
       </footer>
     </article>
