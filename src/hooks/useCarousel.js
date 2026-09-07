@@ -1,84 +1,98 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 
 // ============================================================
-// useCarousel — state and interaction logic for the Games
-//               horizontal carousel.
-// ============================================================
+// useCarousel v2 — seamless infinite auto-scroll via DOM cloning.
+// The track renders items twice; when the scroll position reaches
+// the midpoint, it silently resets to position 0 so the loop is
+// invisible to the user.
+//
 // Returns:
-//   trackRef       — ref to attach to the scrollable track element
-//   activeIndex    — currently "centered" card index (0-based)
-//   setActiveIndex — override active index (used by dot clicks)
-//   isPaused       — whether auto-scroll is paused (hover/touch)
-//   pause          — pause auto-scroll
-//   resume         — resume auto-scroll
+//   trackRef      — attach to the scrollable <div>
+//   activeIndex   — 0-based index within the *original* set
+//   scrollToIndex — jump to original-set index via dot click
+//   pause / resume — stop/start the timer
+//   onScroll      — attach to the track's onScroll event
+//   handlers      — spread onto the track for mouse + touch drag
 // ============================================================
 
-const SCROLL_INTERVAL_MS = 3200; // time between auto-steps
-const SCROLL_STEP_PX     = 280;  // px per auto-step
+const STEP_PX        = 260;   // px advanced per auto tick
+const TICK_MS        = 2800;  // ms between ticks
+const DRAG_FACTOR    = 1.25;
 
 export default function useCarousel(totalItems = 0) {
   const trackRef          = useRef(null);
-  const autoTimerRef      = useRef(null);
+  const timerRef          = useRef(null);
   const isDraggingRef     = useRef(false);
   const dragStartXRef     = useRef(0);
   const dragScrollLeftRef = useRef(0);
+  const pausedRef         = useRef(false);
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused]       = useState(false);
 
-  // ── Auto-scroll ─────────────────────────────────────────
-  const step = useCallback(() => {
+  // ── Seamless reset: once we're past the cloned half, snap back ──
+  const checkLoop = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
-
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    const next      = track.scrollLeft + SCROLL_STEP_PX;
-
-    if (next >= maxScroll - 2) {
-      // Near end — loop back smoothly
-      track.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      track.scrollTo({ left: next, behavior: 'smooth' });
+    const half = track.scrollWidth / 2;
+    if (track.scrollLeft >= half) {
+      track.scrollLeft -= half;
+    }
+    if (track.scrollLeft < 0) {
+      track.scrollLeft += half;
     }
   }, []);
 
-  const startAuto = useCallback(() => {
-    autoTimerRef.current = setInterval(step, SCROLL_INTERVAL_MS);
-  }, [step]);
+  // ── Auto advance ────────────────────────────────────────────
+  const advance = useCallback(() => {
+    const track = trackRef.current;
+    if (!track || pausedRef.current) return;
+    track.scrollLeft += STEP_PX;
+    checkLoop();
+  }, [checkLoop]);
 
-  const stopAuto = useCallback(() => {
-    clearInterval(autoTimerRef.current);
+  const startTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(advance, TICK_MS);
+  }, [advance]);
+
+  const stopTimer = useCallback(() => {
+    clearInterval(timerRef.current);
   }, []);
 
   const pause = useCallback(() => {
-    setIsPaused(true);
-    stopAuto();
-  }, [stopAuto]);
+    pausedRef.current = true;
+    stopTimer();
+  }, [stopTimer]);
 
   const resume = useCallback(() => {
-    setIsPaused(false);
-    startAuto();
-  }, [startAuto]);
+    pausedRef.current = false;
+    startTimer();
+  }, [startTimer]);
 
-  // ── Track scroll → active index sync ────────────────────
+  // ── Sync active dot ─────────────────────────────────────────
   const onScroll = useCallback(() => {
     const track = trackRef.current;
-    if (!track) return;
-    const cardWidth = track.firstChild?.offsetWidth ?? SCROLL_STEP_PX;
-    const idx = Math.round(track.scrollLeft / cardWidth);
+    if (!track || totalItems === 0) return;
+    checkLoop();
+    const half       = track.scrollWidth / 2;
+    const cardWidth  = half / totalItems;
+    const idx        = Math.round((track.scrollLeft % half) / cardWidth);
     setActiveIndex(Math.min(idx, totalItems - 1));
-  }, [totalItems]);
+  }, [totalItems, checkLoop]);
 
-  // ── Dot-click → scroll to card ──────────────────────────
+  // ── Dot click → scroll ──────────────────────────────────────
   const scrollToIndex = useCallback((index) => {
     const track = trackRef.current;
-    if (!track) return;
-    const cardWidth = track.firstChild?.offsetWidth ?? SCROLL_STEP_PX;
-    track.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
+    if (!track || totalItems === 0) return;
+    const half      = track.scrollWidth / 2;
+    const cardWidth = half / totalItems;
+    // Keep within first copy
+    const base = track.scrollLeft < half ? 0 : half;
+    track.scrollTo({ left: base + index * cardWidth, behavior: 'smooth' });
     setActiveIndex(index);
-  }, []);
+  }, [totalItems]);
 
-  // ── Mouse/touch drag ────────────────────────────────────
+  // ── Mouse drag ──────────────────────────────────────────────
   const onMouseDown = useCallback((e) => {
     isDraggingRef.current     = true;
     dragStartXRef.current     = e.pageX - trackRef.current.offsetLeft;
@@ -89,17 +103,19 @@ export default function useCarousel(totalItems = 0) {
   const onMouseMove = useCallback((e) => {
     if (!isDraggingRef.current) return;
     e.preventDefault();
-    const x    = e.pageX - trackRef.current.offsetLeft;
-    const walk = (x - dragStartXRef.current) * 1.2;
+    const x = e.pageX - trackRef.current.offsetLeft;
+    const walk = (x - dragStartXRef.current) * DRAG_FACTOR;
     trackRef.current.scrollLeft = dragScrollLeftRef.current - walk;
-  }, []);
+    checkLoop();
+  }, [checkLoop]);
 
   const onMouseUp = useCallback(() => {
+    if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
     resume();
   }, [resume]);
 
-  // ── Touch ────────────────────────────────────────────────
+  // ── Touch ───────────────────────────────────────────────────
   const onTouchStart = useCallback((e) => {
     dragStartXRef.current     = e.touches[0].clientX;
     dragScrollLeftRef.current = trackRef.current.scrollLeft;
@@ -108,26 +124,25 @@ export default function useCarousel(totalItems = 0) {
 
   const onTouchMove = useCallback((e) => {
     const x    = e.touches[0].clientX;
-    const walk = (dragStartXRef.current - x) * 1.1;
+    const walk = (dragStartXRef.current - x) * DRAG_FACTOR;
     trackRef.current.scrollLeft = dragScrollLeftRef.current + walk;
-  }, []);
+    checkLoop();
+  }, [checkLoop]);
 
   const onTouchEnd = useCallback(() => {
     resume();
   }, [resume]);
 
-  // ── Mount / unmount ──────────────────────────────────────
+  // ── Lifecycle ────────────────────────────────────────────────
   useEffect(() => {
-    startAuto();
-    return () => stopAuto();
-  }, [startAuto, stopAuto]);
+    startTimer();
+    return () => stopTimer();
+  }, [startTimer, stopTimer]);
 
   return {
     trackRef,
     activeIndex,
-    setActiveIndex,
     scrollToIndex,
-    isPaused,
     pause,
     resume,
     onScroll,

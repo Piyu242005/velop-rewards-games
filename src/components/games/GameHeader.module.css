@@ -73,11 +73,16 @@
 }
 
 @media (max-width: 480px) {
-  .title {
-    font-size: var(--font-size-base);
-  }
+  .title  { font-size: var(--font-size-sm); }
+  .inner  { padding-inline: var(--space-4); gap: var(--space-2); }
+}
 
-  .inner {
-    padding-inline: var(--space-4);
-  }
+@media (max-width: 360px) {
+  .title       { display: none; }
+  .tokenBadge  { padding: var(--space-1) var(--space-2); }
+}
+
+@media (min-width: 1440px) {
+  .logo  { height: 36px; }
+  .inner { padding-inline: var(--space-8); }
 }

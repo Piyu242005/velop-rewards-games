@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-4) 0;
+  gap: 6px;
+  padding: var(--space-3) 0 var(--space-5);
 }
 
 .dot {
@@ -14,10 +14,17 @@
   border: none;
   padding: 0;
   cursor: pointer;
+  flex-shrink: 0;
   transition:
     width var(--transition-normal),
-    background var(--transition-normal);
-  flex-shrink: 0;
+    background var(--transition-normal),
+    opacity var(--transition-normal);
+  opacity: 0.55;
+}
+
+.dot:hover {
+  opacity: 0.85;
+  background: var(--color-text-muted);
 }
 
 .dot:focus-visible {
@@ -26,6 +33,13 @@
 }
 
 .dotActive {
-  width: 20px;
+  width: 22px;
   background: var(--color-primary);
+  opacity: 1;
+  box-shadow: 0 0 8px var(--color-primary-glow);
+}
+
+@media (max-width: 480px) {
+  .dot       { width: 5px; height: 5px; }
+  .dotActive { width: 16px; }
 }

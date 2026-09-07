@@ -1,3 +1,4 @@
+/* ── Page shell ── */
 .page {
   min-height: 100vh;
   display: flex;
@@ -11,55 +12,255 @@
   flex-direction: column;
 }
 
-/* ── Hero ── */
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
 .hero {
-  padding: var(--space-12) var(--space-6) var(--space-8);
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    rgba(214, 58, 58, 0.12) 0%,
-    transparent 65%
-  );
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-16) var(--space-6) var(--space-12);
   border-bottom: 1px solid var(--color-border);
 }
 
-.heroInner {
+/* Ambient glows */
+.heroBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glowLeft {
+  position: absolute;
+  top: -120px;
+  left: -80px;
+  width: 540px;
+  height: 540px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214, 58, 58, 0.13) 0%, transparent 65%);
+}
+
+.glowRight {
+  position: absolute;
+  bottom: -100px;
+  right: -60px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(155, 125, 255, 0.1) 0%, transparent 65%);
+}
+
+.gridLines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Hero layout */
+.heroContent {
+  position: relative;
+  z-index: 1;
   max-width: var(--container-max);
   margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-12);
+  align-items: center;
 }
 
-.heroText {
+/* Hero text */
+.heroLeft {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  align-items: flex-start;
+  gap: var(--space-5);
+  max-width: 580px;
 }
 
-.heroTagline {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
+.heroPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary-subtle);
+  border: 1px solid rgba(214, 58, 58, 0.3);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  width: fit-content;
 }
 
-.heroSub {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+.heroTitle {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
-/* ── Carousel section ── */
+.heroDesc {
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-normal);
+  margin: 0;
+  max-width: 480px;
+}
+
+.heroCta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 var(--space-8);
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.ctaPrimary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px var(--color-primary-glow);
+  color: #fff;
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 var(--space-6);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.ctaSecondary:hover {
+  color: var(--color-text);
+  border-color: rgba(255,255,255,0.25);
+}
+
+/* Hero right: stat cards */
+.heroRight {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.statCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  min-width: 200px;
+  box-shadow: var(--shadow-md);
+}
+
+.statCard img {
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.statCardAlt {
+  background: var(--color-surface-light);
+  border-color: var(--color-border-light);
+}
+
+.statNum {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.statLbl {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════════
+   STATS STRIP
+══════════════════════════════════════════ */
+.statsStrip {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.statsInner {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.stripItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stripValue {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.stripLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════
+   CAROUSEL SECTION
+══════════════════════════════════════════ */
 .carouselSection {
   padding-top: var(--space-10);
   flex: 1;
 }
 
-.sectionHeader {
+.sectionHead {
   max-width: var(--container-max);
   margin-inline: auto;
   padding-inline: var(--space-6);
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
   gap: var(--space-4);
-  margin-bottom: var(--space-6);
   flex-wrap: wrap;
 }
 
@@ -67,24 +268,88 @@
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
+  margin: 0 0 var(--space-1);
+}
+
+.sectionSub {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
   margin: 0;
 }
 
-.sectionMeta {
+.redeemLink {
   font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-coin);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.redeemLink:hover { color: #e8b82c; }
+
+/* ══════════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════════ */
+.bottomNav {
+  margin-top: var(--space-10);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: var(--space-4) var(--space-6);
+}
+
+.bottomNavInner {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.navItem:hover { color: var(--color-text); background: var(--color-surface-light); }
+
+.navItemActive {
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
+}
+
+.navItemActive:hover { color: var(--color-primary); background: var(--color-primary-subtle); }
+
+.navIcon { font-size: 16px; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+/* Hide right stat cards on small screens */
+@media (max-width: 900px) {
+  .heroRight   { display: none; }
+  .heroContent { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-  .hero {
-    padding: var(--space-8) var(--space-4) var(--space-6);
-  }
+  .hero        { padding: var(--space-10) var(--space-4) var(--space-8); }
+  .heroTitle   { font-size: 1.75rem; }
+  .heroCta     { flex-direction: column; align-items: flex-start; }
+  .ctaPrimary,
+  .ctaSecondary { width: 100%; justify-content: center; }
+  .statsInner  { padding-inline: var(--space-4); gap: var(--space-6); }
+  .sectionHead { padding-inline: var(--space-4); flex-direction: column; align-items: flex-start; }
+  .redeemLink  { display: none; }
+}
 
-  .heroTagline {
-    height: 28px;
-  }
-
-  .sectionHeader {
-    padding-inline: var(--space-4);
-  }
+@media (min-width: 1600px) {
+  .heroTitle { font-size: 3.5rem; }
 }

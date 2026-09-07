@@ -1,11 +1,11 @@
-// GamesCarousel — horizontal auto-scrolling carousel of 13 game cards.
-// No left/right arrows. Dot indicators. Touch/swipe + mouse drag.
-import { useRef } from 'react';
-import GameCard from './GameCard';
+// GamesCarousel — seamless infinite horizontal carousel.
+// Renders games twice (clone trick) for a gapless loop.
+// No arrows. Dot indicators. Touch/drag. Auto-scroll.
+import GameCard     from './GameCard';
 import CarouselDots from './CarouselDots';
-import useCarousel from '../../hooks/useCarousel';
-import gamesData from '../../data/gamesData';
-import styles from './GamesCarousel.module.css';
+import useCarousel  from '../../hooks/useCarousel';
+import gamesData    from '../../data/gamesData';
+import styles       from './GamesCarousel.module.css';
 
 export default function GamesCarousel() {
   const {
@@ -18,26 +18,35 @@ export default function GamesCarousel() {
     handlers,
   } = useCarousel(gamesData.length);
 
+  // Duplicate the cards so the seamless loop works
+  const doubled = [...gamesData, ...gamesData];
+
   return (
     <section className={styles.wrapper} aria-label="Games carousel">
-      {/* ── Track ──────────────────────────────────────── */}
+      {/* ── Scrollable track ── */}
       <div
         ref={trackRef}
         className={styles.track}
         role="list"
+        aria-label="Scroll through games"
         onScroll={onScroll}
         onMouseEnter={pause}
         onMouseLeave={resume}
         {...handlers}
       >
-        {gamesData.map((game) => (
-          <div key={game.id} className={styles.slide} role="listitem">
+        {doubled.map((game, i) => (
+          <div
+            key={`${game.id}-${i}`}
+            className={styles.slide}
+            role="listitem"
+            aria-hidden={i >= gamesData.length}   /* clones are decorative */
+          >
             <GameCard game={game} />
           </div>
         ))}
       </div>
 
-      {/* ── Dot indicators ─────────────────────────────── */}
+      {/* ── Dot indicators (original set only) ── */}
       <CarouselDots
         total={gamesData.length}
         active={activeIndex}

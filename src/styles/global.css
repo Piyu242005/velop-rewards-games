@@ -103,16 +103,25 @@ button {
   padding-inline: var(--space-6);
 }
 
-@media (max-width: 576px) {
-  .vg-container {
-    padding-inline: var(--space-4);
-  }
+@media (max-width: 374px) {
+  .vg-container { padding-inline: var(--space-3); }
 }
 
-@media (min-width: 1601px) {
-  .vg-container {
-    max-width: var(--container-wide);
-  }
+@media (max-width: 576px) {
+  .vg-container { padding-inline: var(--space-4); }
+}
+
+@media (min-width: 1366px) {
+  html { font-size: 16px; }
+}
+
+@media (min-width: 1600px) {
+  .vg-container { max-width: var(--container-wide); }
+}
+
+@media (min-width: 1920px) {
+  html { font-size: 17px; }
+  .vg-container { max-width: 1760px; }
 }
 
 .vg-surface {
