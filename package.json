@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test",
+    "qa:redemption": "node scripts/qa-redemption.mjs",
     "verify:assets": "node scripts/verify-assets.mjs"
   },
   "dependencies": {
