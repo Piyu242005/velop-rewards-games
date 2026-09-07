@@ -5,7 +5,6 @@
 @import './variables.css';
 @import './animations.css';
 
-/* ── Reset & base ── */
 *,
 *::before,
 *::after {
@@ -18,9 +17,15 @@ html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-bg);
 }
 
 body {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
   font-family: var(--font-family);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
@@ -29,17 +34,18 @@ body {
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #root {
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--color-bg);
 }
 
-/* ── Typography ── */
 h1, h2, h3, h4, h5, h6 {
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
@@ -52,9 +58,7 @@ a {
   transition: color var(--transition-fast);
 }
 
-a:hover {
-  color: var(--color-text);
-}
+a:hover { color: var(--color-text); }
 
 img {
   max-width: 100%;
@@ -69,33 +73,24 @@ button {
   font-family: inherit;
 }
 
-/* ── Focus ── */
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
 
-/* ── Scrollbars ── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--color-bg-deep);
-}
-
+::-webkit-scrollbar-track { background: var(--color-bg-deep); }
 ::-webkit-scrollbar-thumb {
   background: var(--color-surface-light);
   border-radius: var(--radius-pill);
 }
+::-webkit-scrollbar-thumb:hover { background: var(--color-border-light); }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-border-light);
-}
-
-/* ── Utility classes ── */
 .vg-container {
   width: 100%;
   max-width: var(--container-max);
@@ -109,10 +104,6 @@ button {
 
 @media (max-width: 576px) {
   .vg-container { padding-inline: var(--space-4); }
-}
-
-@media (min-width: 1366px) {
-  html { font-size: 16px; }
 }
 
 @media (min-width: 1600px) {
@@ -155,7 +146,6 @@ button {
   border: 0;
 }
 
-/* ── Skip nav (accessibility) ── */
 .vg-skip-nav {
   position: absolute;
   top: -100%;
@@ -171,12 +161,8 @@ button {
   transition: top var(--transition-fast);
 }
 
-.vg-skip-nav:focus {
-  top: 0;
-  outline: none;
-}
+.vg-skip-nav:focus { top: 0; outline: none; }
 
-/* ── Bootstrap overrides ── */
 .btn:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
