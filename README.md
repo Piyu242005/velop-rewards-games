@@ -6,6 +6,16 @@
 [![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)](https://vitejs.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap)](https://getbootstrap.com)
+[![GitHub Pages](https://img.shields.io/badge/Deployed-GitHub%20Pages-222?logo=github)](https://piyu242005.github.io/velop-rewards-games/)
+
+---
+
+## 👤 Author
+
+**Piyush Ramtele**
+GitHub: [@Piyu242005](https://github.com/Piyu242005)
+Repository: [Piyu242005/velop-rewards-games](https://github.com/Piyu242005/velop-rewards-games)
+Live: [piyu242005.github.io/velop-rewards-games](https://piyu242005.github.io/velop-rewards-games/)
 
 ---
 
@@ -100,6 +110,8 @@ src/
 | `/redeem` | Redemption Centre |
 | `*` | 404 Not Found |
 
+> Uses `HashRouter` for full compatibility with GitHub Pages static hosting.
+
 ---
 
 ## 💰 Economy
@@ -128,7 +140,7 @@ src/
 
 ## 🎮 Playable Games
 
-### Space Shooter (Game One)
+### 🚀 Space Shooter (Game One)
 - Canvas 480×640, 60fps `requestAnimationFrame` loop
 - Auto-fire, mouse/touch steering
 - Wave-based enemy spawning (diamonds + boss hexagons every 5 waves)
@@ -137,7 +149,7 @@ src/
 - **Economy:** 1 Game Coin per 100 score points
 - Full loop: IDLE → PLAYING → OVER → REVIVE → REWARD
 
-### Fruit Blast (Game Two)
+### 🍎 Fruit Blast (Game Two)
 - 8×9 grid, 6 emoji fruits
 - BFS flood-fill group detection, hover preview
 - Gravity fall after blast, pop animation
@@ -195,7 +207,7 @@ Features: glassmorphism header · ambient radial glows · subtle grid lines · i
 | Framework | React 18 + Vite 5 |
 | Language | JavaScript / JSX |
 | Styling | CSS Modules + Bootstrap 5 |
-| Routing | React Router 6 |
+| Routing | React Router 6 (HashRouter) |
 | State | Context API + useReducer |
 | Persistence | localStorage |
 | Animation | CSS keyframes + Framer Motion (available) |
@@ -205,13 +217,25 @@ Features: glassmorphism header · ambient radial glows · subtle grid lines · i
 
 ## 🚀 Deployment
 
+This project is configured to auto-deploy to **GitHub Pages** via GitHub Actions on every push to `main`.
+
+### CI/CD Pipeline (`.github/workflows/deploy.yml`)
+1. Checkout code
+2. Setup Node 20 + `npm ci`
+3. `npm run build` (with `VITE_BASE_PATH=/velop-rewards-games/`)
+4. Copy `dist/index.html` → `dist/404.html` (SPA fallback for deep links)
+5. Push `dist/` to `gh-pages` branch via `peaceiris/actions-gh-pages@v4`
+
+### Manual deploy
 ```bash
 npm run build
 # Deploy the dist/ folder to Vercel, Netlify, or any static host.
 ```
 
-**Vercel:** connect repo → auto-deploys on push to `main`.  
+**Vercel:** connect repo → auto-deploys on push to `main`.
 **Netlify:** drag-and-drop `dist/` or connect repo.
+
+> ⚠️ After the first push: go to **Settings → Pages → Source → `gh-pages` branch** to enable the live site.
 
 ---
 
@@ -227,16 +251,17 @@ npm run build
 | 6 | Central Game Coin economy | ✅ |
 | 7 | Redemption centre (5 reward types) | ✅ |
 | 8 | Final QA — persistence, error boundary, a11y, titles | ✅ |
+| GH Pages | GitHub Pages deployment — CI, HashRouter, base path | ✅ |
 
 ---
 
 ## Assets
 
-All game artwork, icons, and branding assets are in `public/assets/`.  
+All game artwork, icons, and branding assets are in `public/assets/`.
 See [`ASSET_MANIFEST.json`](./ASSET_MANIFEST.json) for the full inventory.
 
 For production: convert `public/assets/games/*.png` to AVIF/WebP for optimal performance.
 
 ---
 
-*VELOOP Rewards Games — Built with React + Vite*
+*VELOOP Rewards Games — Built by **Piyush Ramtele** with React + Vite*
