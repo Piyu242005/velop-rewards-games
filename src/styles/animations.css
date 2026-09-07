@@ -1,0 +1,88 @@
+/* ============================================================
+   VELOOP Rewards Games — Animation Utilities
+   ============================================================ */
+
+/* ── Shimmer / shine (Play Now button) ── */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.anim-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-primary) 35%,
+    rgba(255, 255, 255, 0.35) 50%,
+    var(--color-primary) 65%,
+    var(--color-primary) 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 2.8s linear infinite;
+}
+
+/* ── Soft pulse for coin balance ── */
+@keyframes softPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.72; }
+}
+
+.anim-pulse {
+  animation: softPulse 2.4s ease-in-out infinite;
+}
+
+/* ── Fade-in ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* ── Scale-in (card appear) ── */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.anim-scale-in {
+  animation: scaleIn 0.35s ease forwards;
+}
+
+/* ── Glow pulse ── */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 10px var(--color-primary-glow); }
+  50%       { box-shadow: 0 0 24px var(--color-primary-glow), 0 0 48px var(--color-primary-glow); }
+}
+
+.anim-glow-pulse {
+  animation: glowPulse 2.4s ease-in-out infinite;
+}
+
+/* ── Carousel scroll (seamless) ── */
+@keyframes carouselScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.anim-carousel-scroll {
+  animation: carouselScroll var(--carousel-duration, 32s) linear infinite;
+}
+
+/* ── Reduced motion overrides ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,60 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.track {
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;       /* Firefox */
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  width: 100%;
+  cursor: grab;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track:active {
+  cursor: grabbing;
+}
+
+.slide {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* Fade-in edge masks */
+@media (min-width: 769px) {
+  .wrapper {
+    position: relative;
+  }
+
+  .wrapper::before,
+  .wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 48px; /* above dots */
+    width: 60px;
+    pointer-events: none;
+    z-index: var(--z-raised);
+  }
+
+  .wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg), transparent);
+  }
+
+  .wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg), transparent);
+  }
+}

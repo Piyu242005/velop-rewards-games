@@ -1,0 +1,30 @@
+.tokenCost {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(155, 125, 255, 0.12);
+  border: 1px solid rgba(155, 125, 255, 0.25);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px 3px 6px;
+  color: var(--color-token);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.amount {
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  opacity: 0.75;
+  font-weight: var(--font-weight-normal);
+}

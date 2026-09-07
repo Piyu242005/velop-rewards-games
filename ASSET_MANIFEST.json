@@ -1,0 +1,48 @@
+{
+  "project": "VELOOP Rewards Games",
+  "source": "Supplied UI reference image",
+  "assets": {
+    "games": [
+      "01-space-shooter.png",
+      "02-fruit-blast.png",
+      "03-puzzle-match.png",
+      "04-cricket-champ.png",
+      "05-car-rush.png",
+      "06-bubble-pop.png",
+      "07-memory-flip.png",
+      "08-ninja-run.png",
+      "09-treasure-hunt.png",
+      "10-word-arena.png",
+      "11-quiz-master.png",
+      "12-basketball-pro.png",
+      "13-aqua-escape.png"
+    ],
+    "branding": [
+      "velop-logo.png",
+      "hero-tagline.png",
+      "reward-script.png"
+    ],
+    "icons": [
+      "token-icon.png",
+      "game-coin-icon.png",
+      "games-icon.png",
+      "notification-icon.png",
+      "profile-avatar.png",
+      "redeem-ve-icon.png",
+      "redeem-sve-icon.png",
+      "redeem-gems-icon.png",
+      "redeem-tokens-icon.png",
+      "redeem-spins-icon.png"
+    ],
+    "reference": [
+      "velop-games-reference.png"
+    ]
+  },
+  "notes": [
+    "Game images are crops from the supplied reference and may require cleanup/redrawing before production use.",
+    "Transparent-background originals were not present in the supplied image.",
+    "For production, keep artwork separate from HTML/CSS overlays and buttons.",
+    "Recommended game asset naming: lowercase kebab-case.",
+    "Recommended UI image format for production: AVIF/WebP where supported."
+  ]
+}
