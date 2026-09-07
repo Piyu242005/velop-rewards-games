@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test": "node --test",
     "qa:redemption": "node scripts/qa-redemption.mjs",
-    "verify:assets": "node scripts/verify-assets.mjs"
+    "qa:games": "node scripts/qa-games.mjs",
+    "verify:assets": "node scripts/verify-assets.mjs",
+    "qa": "npm run build && npm test && npm run qa:redemption && npm run qa:games && npm run verify:assets"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
