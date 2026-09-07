@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+// HashRouter keeps routing client-side — required for GitHub Pages
+// which can't rewrite URLs to index.html on the server side.
+import { HashRouter as BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { GameCoinProvider } from './context/GameCoinContext';
 import { TokenProvider }    from './context/TokenContext';
 import ErrorBoundary        from './components/common/ErrorBoundary';
