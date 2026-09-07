@@ -1,43 +1,51 @@
 // GameRewardPage — shown after game ends.
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useEffect, useRef }   from 'react';
-import GameHeader               from '../components/games/GameHeader';
-import styles                   from './GameRewardPage.module.css';
-import { getGameBySlug }        from '../data/gamesData';
-import useGameCoins             from '../hooks/useGameCoins';
-import usePageTitle             from '../hooks/usePageTitle';
-import coinIcon                 from '../../assets/icons/game-coin-icon.png';
+import { useEffect, useRef } from 'react';
+import GameHeader from '../components/games/GameHeader';
+import styles from './GameRewardPage.module.css';
+import { getGameBySlug } from '../data/gamesData';
+import useGameCoins from '../hooks/useGameCoins';
+import usePageTitle from '../hooks/usePageTitle';
+import coinIcon from '../../assets/icons/game-coin-icon.png';
+
+const CLAIM_KEY = 'vg_reward_claimed_';
 
 export default function GameRewardPage() {
-  const { slug }           = useParams();
-  const navigate           = useNavigate();
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const { earnCoins, coinBalance } = useGameCoins();
-  const awardedRef         = useRef(false);
-
-  const game    = getGameBySlug(slug);
+  const awardedRef = useRef(false);
+  const game = getGameBySlug(slug);
   usePageTitle('Reward');
-  // coins and score are passed via location state from the game
-  const params  = new URLSearchParams(window.location.search);
-  const coins   = Number(params.get('coins') ?? 0);
-  const score   = Number(params.get('score') ?? 0);
 
-  // Award coins once on mount
+  const params = new URLSearchParams(window.location.search);
+  const coins = Math.max(0, Number(params.get('coins') ?? 0));
+  const score = Math.max(0, Number(params.get('score') ?? 0));
+  const claimId = `${slug}:${score}:${coins}`;
+  const claimStorageKey = `${CLAIM_KEY}${claimId}`;
+
   useEffect(() => {
-    if (!awardedRef.current && coins > 0) {
-      earnCoins(coins);
-      awardedRef.current = true;
+    if (awardedRef.current || coins <= 0) return;
+    try {
+      if (sessionStorage.getItem(claimStorageKey) === '1') {
+        awardedRef.current = true;
+        return;
+      }
+      sessionStorage.setItem(claimStorageKey, '1');
+    } catch {
+      // Continue for browsers that block sessionStorage; backend must validate in production.
     }
-  }, [coins, earnCoins]);
+    earnCoins(coins);
+    awardedRef.current = true;
+  }, [claimStorageKey, coins, earnCoins]);
 
   const gameName = game?.name ?? 'Game';
 
   return (
     <div className={styles.page}>
       <GameHeader title="Reward" />
-
       <main className={styles.main} id="main-content">
         <div className={styles.card}>
-          {/* ── Celebration header ── */}
           <div className={styles.top}>
             <div className={styles.coinBadge} aria-hidden="true">
               <img src={coinIcon} alt="" width={48} height={48} className={styles.coinIcon} />
@@ -46,7 +54,6 @@ export default function GameRewardPage() {
             <p className={styles.sub}>{gameName}</p>
           </div>
 
-          {/* ── Stats ── */}
           <div className={styles.stats}>
             <div className={styles.stat}>
               <span className={styles.statValue}>{score.toLocaleString()}</span>
@@ -59,30 +66,19 @@ export default function GameRewardPage() {
             </div>
           </div>
 
-          {/* ── New balance ── */}
           <div className={styles.balanceRow}>
             <span className={styles.balanceLabel}>Total Game Coins</span>
             <span className={styles.balanceValue}>{coinBalance.toLocaleString()}</span>
           </div>
 
-          {/* ── Actions ── */}
           <div className={styles.actions}>
             {game?.playable && (
-              <button
-                type="button"
-                className={styles.playAgainBtn}
-                onClick={() => navigate(`/games/${slug}/home`)}
-                aria-label={`Play ${gameName} again`}
-              >
+              <button type="button" className={styles.playAgainBtn} onClick={() => navigate(`/games/${slug}/home`)} aria-label={`Play ${gameName} again`}>
                 Play Again
               </button>
             )}
-            <Link to="/redeem" className={styles.redeemBtn}>
-              Redeem Coins
-            </Link>
-            <Link to="/games" className={styles.backLink}>
-              ← Back to Games
-            </Link>
+            <Link to="/redeem" className={styles.redeemBtn}>Redeem Coins</Link>
+            <Link to="/games" className={styles.backLink}>← Back to Games</Link>
           </div>
         </div>
       </main>
