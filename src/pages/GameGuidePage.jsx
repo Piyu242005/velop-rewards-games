@@ -36,13 +36,27 @@ export default function GameGuidePage() {
     navigate(`/games/${game.slug}/play`);
   }
 
+  function handleArtworkError(event) {
+    const image = event.currentTarget;
+    if (!image.src.toLowerCase().endsWith('.avif')) return;
+    image.onerror = null;
+    image.src = game.image.replace(/\.avif$/i, '.png');
+  }
+
   return (
     <div className={styles.page}>
       <GameHeader title={`${game.name} — Guide`} />
       <main className={styles.main} id="main-content">
         <div className={styles.card}>
           <div className={styles.artworkStrip}>
-            <img src={game.image} alt="" className={styles.artworkImg} aria-hidden="true" />
+            <img
+              src={game.image}
+              alt=""
+              className={styles.artworkImg}
+              aria-hidden="true"
+              decoding="async"
+              onError={handleArtworkError}
+            />
             <div className={styles.artworkFade} />
           </div>
           <div className={styles.body}>
