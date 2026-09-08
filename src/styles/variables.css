@@ -3,99 +3,84 @@
    ============================================================ */
 
 :root {
-  /* Backgrounds */
-  --color-bg:              #161827;
-  --color-bg-deep:         #0e0f1c;
-  --color-surface:         #1d1f33;
-  --color-surface-light:   #252843;
-  --color-surface-glass:   rgba(255, 255, 255, 0.04);
+  --color-bg: #05060a;
+  --color-bg-deep: #020307;
+  --color-surface: #080a10;
+  --color-surface-light: #0d1119;
+  --color-surface-glass: rgba(255,255,255,.025);
 
-  /* Accent */
-  --color-primary:         #d63a3a;
-  --color-primary-dark:    #a82626;
-  --color-primary-glow:    rgba(214, 58, 58, 0.35);
-  --color-primary-subtle:  rgba(214, 58, 58, 0.12);
+  --color-primary: #ff2038;
+  --color-primary-dark: #c70e24;
+  --color-primary-glow: rgba(255,32,56,.28);
+  --color-primary-subtle: rgba(255,32,56,.09);
 
-  /* Text */
-  --color-text:            #f0f1f5;
-  --color-text-muted:      #8b8fa8;
-  --color-text-dim:        #555878;
+  --color-text: #f6f7fb;
+  --color-text-muted: #9aa0af;
+  --color-text-dim: #596071;
 
-  /* Borders */
-  --color-border:          rgba(255, 255, 255, 0.08);
-  --color-border-light:    rgba(255, 255, 255, 0.14);
+  --color-border: rgba(255,255,255,.11);
+  --color-border-light: rgba(255,255,255,.18);
 
-  /* Semantic */
-  --color-success:         #2ecc71;
-  --color-warning:         #f39c12;
-  --color-info:            #3b82f6;
+  --color-success: #38d996;
+  --color-warning: #f6bf45;
+  --color-info: #61a8ff;
 
-  /* Game Coins */
-  --color-coin:            #f5c842;
-  --color-coin-glow:       rgba(245, 200, 66, 0.3);
+  --color-coin: #f6c843;
+  --color-coin-glow: rgba(246,200,67,.24);
+  --color-token: #a58cff;
+  --color-token-glow: rgba(165,140,255,.22);
 
-  /* Tokens */
-  --color-token:           #9b7dff;
-  --color-token-glow:      rgba(155, 125, 255, 0.3);
+  --font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-size-xs: .75rem;
+  --font-size-sm: .875rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.125rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.5rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 800;
+  --line-height-tight: 1.12;
+  --line-height-normal: 1.5;
 
-  /* ── Typography ── */
-  --font-family:           -apple-system, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
-  --font-size-xs:          0.75rem;    /* 12px */
-  --font-size-sm:          0.875rem;   /* 14px */
-  --font-size-base:        1rem;       /* 16px */
-  --font-size-md:          1.125rem;   /* 18px */
-  --font-size-lg:          1.25rem;    /* 20px */
-  --font-size-xl:          1.5rem;     /* 24px */
-  --font-size-2xl:         2rem;       /* 32px */
-  --font-size-3xl:         2.5rem;     /* 40px */
-  --font-weight-normal:    400;
-  --font-weight-medium:    500;
-  --font-weight-semibold:  600;
-  --font-weight-bold:      700;
-  --line-height-tight:     1.2;
-  --line-height-normal:    1.6;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
 
-  /* ── Spacing ── */
-  --space-1:   0.25rem;   /* 4px */
-  --space-2:   0.5rem;    /* 8px */
-  --space-3:   0.75rem;   /* 12px */
-  --space-4:   1rem;      /* 16px */
-  --space-5:   1.25rem;   /* 20px */
-  --space-6:   1.5rem;    /* 24px */
-  --space-8:   2rem;      /* 32px */
-  --space-10:  2.5rem;    /* 40px */
-  --space-12:  3rem;      /* 48px */
-  --space-16:  4rem;      /* 64px */
-
-  /* ── Radius ── */
-  --radius-sm:   6px;
-  --radius-md:   10px;
-  --radius-lg:   16px;
-  --radius-xl:   22px;
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-pill: 9999px;
 
-  /* ── Shadows ── */
-  --shadow-sm:   0 1px 4px rgba(0, 0, 0, 0.35);
-  --shadow-md:   0 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.6);
-  --shadow-glow-primary: 0 0 18px var(--color-primary-glow);
-  --shadow-glow-coin:    0 0 14px var(--color-coin-glow);
+  --shadow-sm: 0 3px 14px rgba(0,0,0,.35);
+  --shadow-md: 0 8px 28px rgba(0,0,0,.45);
+  --shadow-lg: 0 14px 44px rgba(0,0,0,.62);
+  --shadow-glow-primary: 0 0 24px var(--color-primary-glow);
+  --shadow-glow-coin: 0 0 18px var(--color-coin-glow);
 
-  /* ── Transitions ── */
-  --transition-fast:    150ms ease;
-  --transition-normal:  250ms ease;
-  --transition-slow:    400ms ease;
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
 
-  /* ── Z-index scale ── */
-  --z-base:    0;
-  --z-raised:  10;
+  --z-base: 0;
+  --z-raised: 10;
   --z-overlay: 100;
-  --z-modal:   200;
-  --z-toast:   300;
+  --z-modal: 200;
+  --z-toast: 300;
 
-  /* ── Layout ── */
-  --container-max:   1440px;
-  --container-wide:  1600px;
-  --header-height:   64px;
-  --card-aspect:     calc(4 / 5);   /* game card portrait */
+  --container-max: 1480px;
+  --container-wide: 1680px;
+  --header-height: 56px;
+  --card-aspect: calc(3 / 4);
 }
