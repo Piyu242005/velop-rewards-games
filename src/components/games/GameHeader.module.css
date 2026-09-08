@@ -1,88 +1,10 @@
-.header {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-overlay);
-  background: rgba(22, 24, 39, 0.85);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: var(--header-height);
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--space-6);
-  gap: var(--space-4);
-}
-
-.logoLink {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  height: 32px;
-  width: auto;
-  object-fit: contain;
-}
-
-.title {
-  flex: 1;
-  text-align: center;
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-  letter-spacing: 0.02em;
-  margin: 0;
-}
-
-.right {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.tokenBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(155, 125, 255, 0.1);
-  border: 1px solid rgba(155, 125, 255, 0.22);
-  border-radius: var(--radius-pill);
-  padding: var(--space-2) var(--space-3);
-  white-space: nowrap;
-}
-
-.tokenIcon {
-  width: 14px;
-  height: 14px;
-  object-fit: contain;
-}
-
-.tokenValue {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-token);
-  font-variant-numeric: tabular-nums;
-}
-
-@media (max-width: 480px) {
-  .title  { font-size: var(--font-size-sm); }
-  .inner  { padding-inline: var(--space-4); gap: var(--space-2); }
-}
-
-@media (max-width: 360px) {
-  .title       { display: none; }
-  .tokenBadge  { padding: var(--space-1) var(--space-2); }
-}
-
-@media (min-width: 1440px) {
-  .logo  { height: 36px; }
-  .inner { padding-inline: var(--space-8); }
-}
+.header { position:sticky; top:0; z-index:100; height:56px; background:rgba(3,4,8,.94); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-bottom:1px solid rgba(255,255,255,.1); }
+.inner { max-width:1480px; height:56px; margin:auto; padding:0 24px; display:flex; align-items:center; gap:26px; }
+.logoLink { flex:0 0 auto; display:flex; align-items:center; }
+.logo { width:116px; height:auto; object-fit:contain; }
+.title { margin:0; flex:1; text-align:left; color:#fff; font-size:15px; font-weight:700; letter-spacing:.02em; }
+.right { margin-left:auto; display:flex; align-items:center; gap:9px; }
+.tokenBadge { display:inline-flex; align-items:center; gap:6px; min-width:66px; height:32px; padding:0 11px; border:1px solid rgba(255,255,255,.13); border-radius:999px; background:#0b0d13; box-shadow:inset 0 0 12px rgba(255,255,255,.015); }
+.tokenIcon { width:16px; height:16px; }
+.tokenValue { color:#fff; font-size:12px; font-weight:800; }
+@media(max-width:600px){.inner{padding:0 14px;gap:10px}.logo{width:100px}.title{display:none}.right{gap:6px}}
